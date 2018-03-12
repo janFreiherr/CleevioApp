@@ -1,0 +1,43 @@
+﻿@model CleevioApp.Models.ProductForDeleteDto
+
+@{
+    ViewBag.Title = "Delete Confirmation";
+}
+
+<h2>Delete Confirmation</h2>
+
+<h3>Are you sure you want to remove this product ?</h3>
+<div>
+    <hr />
+    @Html.HiddenFor(model => model.InvoiceId)
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(model => model.InvoiceId)
+        @Html.HiddenFor(model => model.ProductId)
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to Invoices", "Index", "Home")
+        </div>
+    }
+</div>

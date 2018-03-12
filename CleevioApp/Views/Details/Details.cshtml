@@ -1,0 +1,95 @@
+﻿@model CleevioApp.Models.InvoiceWithProductsDto
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+            <div>
+                <h4>Invoice</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Date)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Date)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ClientName)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.ClientName)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Address)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Address)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.PaymentStatus)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.PaymentStatus)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Total)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Total)
+                    </dd>
+
+                </dl>
+            </div>
+            <p>
+                @Html.ActionLink("Edit invoice information", "Edit", "Home", new { id = Model.InvoiceId }, null) |
+                @Html.ActionLink("Add items", "Add", "Details", new { id = Model.InvoiceId }, null) | 
+                @Html.ActionLink("Back to Invoices", "Index", "Home")
+            </p>
+
+
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Products)
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model.Products)
+                { 
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ProductId, Model.InvoiceId })
+                    </td>
+                </tr>
+                 }
+
+            </table>
+
