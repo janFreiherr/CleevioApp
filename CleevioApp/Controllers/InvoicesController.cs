@@ -29,6 +29,7 @@ namespace CleevioApp.Controllers
             foreach (var invoice in result)
             {
                 invoice.Products = _invoiceRepository.GetProductsForInvoice(invoice);
+                invoice.Products = _invoiceRepository.GetProductsForInvoice(invoice);
             }
 
             return result;
