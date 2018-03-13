@@ -17,9 +17,26 @@ namespace CleevioApp.Services
         {
             _context = context;
         }
-        public Invoice GetInvoiceById(int id)
+        public Invoice GetInvoice(int id)
         {
             return _context.Invoices.FirstOrDefault(i => i.InvoiceId == id);
+        }
+
+        public IEnumerable<ProductWithQuantityDto> GetProductsForInvoice(int invoiceId)
+        {
+            var invoice = GetInvoice(invoiceId);
+
+            var result = _context.Invoices
+                                    .Where(i => i.InvoiceId == invoice.InvoiceId)
+                                    .SelectMany(i => i.InvoiceProducts
+                                        .Select(ip => new ProductWithQuantityDto()
+                                        {
+                                            ProductId = ip.ProductId,
+                                            Name = ip.Product.Name,
+                                            Price = ip.Product.Price * ip.Quantity,
+                                            Quantity = ip.Quantity
+                                        })).ToList();
+            return result;
         }
 
         public IEnumerable<ProductWithQuantityDto> GetProductsForInvoice(Invoice invoice)
@@ -141,5 +158,6 @@ namespace CleevioApp.Services
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
     }
 }

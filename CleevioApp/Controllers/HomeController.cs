@@ -10,24 +10,17 @@ using System.Web.Mvc;
 
 namespace CleevioApp.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        private IInvoiceRepository _invoiceRepository;
-
-
-        public HomeController()
+        public HomeController() { }
+        public HomeController(IInvoiceRepository repository) : base(repository)
         {
-            _invoiceRepository = new InvoiceRepository(new CleevioDBContext());
-        }
 
-        public HomeController(IInvoiceRepository repository)
-        {
-            _invoiceRepository = repository;
         }
 
         public ActionResult Index()
         {
-            var invoices = _invoiceRepository.GetInvoices();
+            var invoices = TheRepository.GetInvoices();
             
             return View(invoices);
         }
@@ -39,7 +32,7 @@ namespace CleevioApp.Controllers
             invoice.Date = DateTime.Now;
             if (ModelState.IsValid)
             {
-                _invoiceRepository.AddInvoice(invoice);
+                TheRepository.AddInvoice(invoice);
             }
             return RedirectToAction("Index");
         }
@@ -50,14 +43,14 @@ namespace CleevioApp.Controllers
             return View();
         }
 
-        // GET: /Edit/5
+
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Invoice invoice = _invoiceRepository.GetInvoiceById(id.GetValueOrDefault());
+            Invoice invoice = TheRepository.GetInvoice(id.GetValueOrDefault());
             if (invoice == null)
             {
                 return HttpNotFound();
@@ -65,38 +58,16 @@ namespace CleevioApp.Controllers
             return View(invoice);
         }
 
-        // POST: /Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Invoice invoice)
         {
             if (ModelState.IsValid)
             {
-                invoice =_invoiceRepository.EditInvoice(invoice);
+                invoice = TheRepository.EditInvoice(invoice);
                 return RedirectToAction("Index");
             }
             return View(invoice);
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-        protected override void Dispose(bool disposing)
-        {
-            _invoiceRepository.Dispose();
-            base.Dispose(disposing);
         }
     }
 }

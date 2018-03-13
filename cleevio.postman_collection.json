@@ -1,0 +1,192 @@
+{
+	"info": {
+		"name": "cleevio",
+		"_postman_id": "e3d8f947-8f33-4992-aba3-ed435b4c83c2",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PATCH request for editing invoice",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "",
+						"value": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"address\": \"San Francisco\",\n        \"ClientName\": \"Jan Freiherr\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:54205/api/invoices?paid=false",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "54205",
+					"path": [
+						"api",
+						"invoices"
+					],
+					"query": [
+						{
+							"key": "paid",
+							"value": "false",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET statement of unpaid invoices only for admin",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "",
+						"value": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"address\": \"San Francisco\",\n        \"ClientName\": \"Jan Freiherr\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:54205/api/invoices?paid=false",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "54205",
+					"path": [
+						"api",
+						"invoices"
+					],
+					"query": [
+						{
+							"key": "paid",
+							"value": "false",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET statement of unpaid invoices",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:54205/api/invoices?paid=true",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "54205",
+					"path": [
+						"api",
+						"invoices"
+					],
+					"query": [
+						{
+							"key": "paid",
+							"value": "true",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET statement of unpaid invoices 401",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "",
+						"value": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"address\": \"San Francisco\",\n        \"ClientName\": \"Jan Freiherr\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:54205/api/invoices?paid=false",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "54205",
+					"path": [
+						"api",
+						"invoices"
+					],
+					"query": [
+						{
+							"key": "paid",
+							"value": "false",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

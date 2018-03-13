@@ -13,21 +13,14 @@ using CleevioApp.Services;
 
 namespace CleevioApp.Controllers
 {
-    public class DetailsController : Controller
+    public class DetailsController : BaseController
     {
-        private IInvoiceRepository _invoiceRepository;
-
-        public DetailsController()
+        public DetailsController() { }
+        public DetailsController(IInvoiceRepository repository) : base(repository)
         {
-            _invoiceRepository = new InvoiceRepository(new CleevioDBContext());
+
         }
 
-        public DetailsController(IInvoiceRepository repository)
-        {
-            _invoiceRepository = repository;
-        }
-
-        // GET: Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -35,9 +28,9 @@ namespace CleevioApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Invoice invoice = _invoiceRepository.GetInvoiceById(id.GetValueOrDefault());
+            Invoice invoice = TheRepository.GetInvoice(id.GetValueOrDefault());
 
-            var poductsForInvoice = _invoiceRepository.GetProductsForInvoice(invoice);
+            var poductsForInvoice = TheRepository.GetProductsForInvoice(invoice);
 
             var model = Mapper.Map<InvoiceWithProductsDto>(invoice);
             model.Products = poductsForInvoice;
@@ -64,7 +57,7 @@ namespace CleevioApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _invoiceRepository.AddProductToInvoice(productForAdd.InvoiceId,
+                TheRepository.AddProductToInvoice(productForAdd.InvoiceId,
                                                         productForAdd.ProductId,
                                                     productForAdd.Quantity);
 
@@ -81,12 +74,12 @@ namespace CleevioApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Invoice invoice = _invoiceRepository.GetInvoiceById(id.GetValueOrDefault());
+            Invoice invoice = TheRepository.GetInvoice(id.GetValueOrDefault());
             if (invoice == null)
             {
                 return HttpNotFound();
             }
-            var allProducts = _invoiceRepository.GetProducts();
+            var allProducts = TheRepository.GetProducts();
 
             List<SelectListItem> items = new List<SelectListItem>();
             foreach (var product in allProducts)
@@ -114,9 +107,9 @@ namespace CleevioApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var invoice = _invoiceRepository.GetInvoiceById(invoiceId);
+            var invoice = TheRepository.GetInvoice(invoiceId);
             
-            Product productToDelete = _invoiceRepository.GetProductFromInvoice(invoice, id.GetValueOrDefault());
+            Product productToDelete = TheRepository.GetProductFromInvoice(invoice, id.GetValueOrDefault());
 
             var model = Mapper.Map<ProductForDeleteDto>(productToDelete);
             model.InvoiceId = invoiceId;
@@ -132,17 +125,9 @@ namespace CleevioApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(ProductForDeleteDto product)
         {
-            _invoiceRepository.RemoveProductFromInvoice(product.InvoiceId, product.ProductId);
+            TheRepository.RemoveProductFromInvoice(product.InvoiceId, product.ProductId);
             return RedirectToAction("Details", "Details", new { id = product.InvoiceId });
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _invoiceRepository.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }
