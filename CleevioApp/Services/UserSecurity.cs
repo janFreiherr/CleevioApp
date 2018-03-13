@@ -9,6 +9,7 @@ namespace CleevioApp.Services
     {
         public static bool Login(string username, string password)
         {
+            // TODO users authentication
             if (username.Equals("admin") && password.Equals("admin"))
             {
                 return true;
